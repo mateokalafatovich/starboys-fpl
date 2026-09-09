@@ -6,12 +6,12 @@ const pool = new Pool({
     host: process.env.DB_HOST,
     database: process.env.DB_DATABASE,
     password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT
+    port: process.env.DB_PORT,
+    idleTimeoutMillis: 30000
 });
 
-module.exports = {
-    query: (text, params) => {
-        return pool.query(text, params);
-    },
-    pool
+const query = (text, params) => {
+    return pool.query(text, params);
 };
+
+export { query, pool };
