@@ -16,7 +16,6 @@ CREATE TABLE IF NOT EXISTS gameweek_scores (
     total_points INT NOT NULL,
     league_rank INT NOT NULL,
     rank_change INT NOT NULL,
-    overall_rank INT NOT NULL,
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT unique_manager_week UNIQUE (fpl_id, gameweek_id)
 );
