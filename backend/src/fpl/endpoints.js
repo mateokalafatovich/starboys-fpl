@@ -1,5 +1,6 @@
 const BASE_URL = 'https://fantasy.premierleague.com';
 
 export const ENDPOINTS = {
-    standings: `${BASE_URL}/api/leagues-classic/${process.env.LEAGUE_ID}/standings/`
+    bootstrap: `${BASE_URL}/api/bootstrap-static/`,
+    standings: (leagueId) => `${BASE_URL}/api/leagues-classic/${leagueId}/standings/`
 };
