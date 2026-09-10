@@ -1,4 +1,5 @@
 import { getStandingsData, getCurrentGameweek } from '../fpl/fplClient.js';
+import { syncUsers } from './userService.js';
 import { pool } from '../config/db.js';
 import { cacheService } from '../config/redis.js';
 
@@ -13,6 +14,8 @@ function parseStandings(rawData) {
     // Parse standings data
     return rawData.standings.results.map((entry) => ({
         fplEntryId: entry.entry,
+        managerName: entry.player_name,
+        teamName: entry.entry_name,
         rank: entry.rank,
         rankChange: entry.rank - entry.last_rank,
         totalPoints: entry.total,
@@ -49,6 +52,7 @@ async function getLeagueStandings(leagueId=LEAGUE_ID) {
             throw new Error(`Invalid standings response for league ${leagueId}`);
         }
         const standings = parseStandings(rawData);
+        await syncUsers(standings);
         await persistStandings(gameweekId, standings);
         return standings;
     });
