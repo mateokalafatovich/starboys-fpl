@@ -1,17 +1,20 @@
-import { Pool } from 'pg';
+import Database from 'better-sqlite3';
 import 'dotenv/config';
 
-const pool = new Pool({
-    user: process.env.DB_USER,
-    host: process.env.DB_HOST,
-    database: process.env.DB_DATABASE,
-    password: process.env.DB_PASSWORD,
-    port: process.env.DB_PORT,
-    idleTimeoutMillis: 30000
-});
+const db = new Database(process.env.DB_PATH || './data/app.db');
 
-const query = (text, params) => {
-    return pool.query(text, params);
+db.pragma('foreign_keys = ON');
+db.pragma('journal_mode = WAL');
+
+const query = (text, params = []) => {
+    const statement = db.prepare(text);
+    const command = text.trim().split(/\s+/)[0].toUpperCase();
+    if (command === 'SELECT') {
+        return { rows: statement.all(params) }
+    } else {
+        const info = statement.run(params);
+        return { rows: [], ...info };
+    }
 };
 
-export { query, pool };
+export { query, db };

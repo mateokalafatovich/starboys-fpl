@@ -23,7 +23,7 @@ async function getCurrentGameweek() {
     return currentEvent.id;
   } catch (err) {
     console.error('Error fetching current gameweek:', err.message);
-    throw error;
+    throw err;
   }
 }
 
