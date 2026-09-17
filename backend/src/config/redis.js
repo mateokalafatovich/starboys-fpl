@@ -46,17 +46,17 @@ export async function disconnectRedis() {
 const DEFAULT_TTL = 300; // 5 minutes;
 export const cacheService = {
     /**
-     * Get data from cache or execute fallback function to fetch from Postgres
+     * Get data from cache or execute fallback function to fetch from Sqlite
      * @param {string} key - Redis key
      * @param {number} ttl - Time-to-live in seconds
-     * @param {Function} fallbackFn - Async function returning Postgres data
+     * @param {Function} fallbackFn - Async function returning Sqlite data
      */
     async getOrSet(key, ttl=DEFAULT_TTL, fallbackFn) {
         try {
             const cached = await redisClient.get(key);
-            if (cachedValue) {
+            if (cached) {
                 try {
-                    return JSON.parse(cachedValue);
+                    return JSON.parse(cached);
                 } catch (parseErr) {
                     console.error(
                         `Corrupted cache value for key ${key}, refetching`, 
@@ -64,7 +64,7 @@ export const cacheService = {
                     );
                 }
             }
-            // Cache Miss: fetch from Postgres via fallback
+            // Cache Miss: fetch from Sqlite via fallback
             const freshData = await fallbackFn();
             // If data exists, store it in Redis
             if (freshData !== undefined && freshData != null) {

@@ -1,23 +1,25 @@
-import { pool } from '../config/db.js';
+import { db } from '../config/db.js';
+
+const upsertUser = db.prepare(`
+    INSERT INTO users (fpl_id, manager_name, team_name)
+    VALUES (?, ?, ?)
+    ON CONFLICT (fpl_id)
+    DO UPDATE SET
+        manager_name = EXCLUDED.manager_name,
+        team_name = EXCLUDED.team_name
+`);
 
 /**
  * Upsert managers into the users table
- * @param {Array} entries - raw entries from FPL standings API
+ * @param {Array} managers - parsed standings entries
  */
 async function syncUsers(managers) {
-    const queries = managers.map((m) => {
-        pool.query(
-            `INSERT INTO users 
-                (fpl_id, manager_name, team_name)
-            VALUES ($1, $2, $3)
-            ON CONFLICT (fpl_id)
-            DO UPDATE SET
-                manager_name = EXCLUDED.manager_name,
-                team_name = EXCLUDED.team_name`,
-            [m.fplEntryId, m.managerName, m.teamName]
-        )
+    const upsertMany = db.transaction((rows) => {
+        for (const m of rows) {
+            upsertUser.run(m.fplEntryId, m.managerName, m.teamName);
+        }
     });
-    await Promise.all(queries);
+    upsertMany(managers);
 }
 
 export { 
