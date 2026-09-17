@@ -6,9 +6,11 @@ function App() {
   return (
     <>
       <Header/>
+      {/*
       <main>
         <ProgressionChart/> 
       </main>
+      */}
     </>
   );
 }
