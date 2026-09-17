@@ -1,0 +1,78 @@
+.main-header {
+    display: flex;
+    flex-direction: column;
+    background-color: #1e293b;
+    color: #f8fafc;
+    height: 20vh; /* header = 20% of viewport height */
+    box-sizing: border-box;
+}
+
+.site-title {
+    flex: 0 0 75%; /* title takes 75% of header height */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    overflow: hidden;
+}
+
+.site-title h1 {
+    margin: 0;
+    font-size: 2rem;
+    font-family: fantasy;
+}
+
+.site-title__image {
+    height: 100%;
+    width: auto;
+    max-width: 100%;
+    object-fit: contain;
+    object-position: center top;
+}
+
+.tab-nav {
+    flex: 0 0 25%; /* navbar takes remaining 25% of header height */
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #0f172a;
+}
+
+.nav-links {
+    display: flex;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    gap: 2rem;
+}
+
+.nav-links li {
+    display: inline-block;
+}
+
+.nav-links a {
+    display: block;
+    padding: 0.75rem 0.5rem;
+    color: #cbd5e1;
+    text-decoration: none;
+    font-weight: 500;
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-family: 'Space Grotesk', 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
+    letter-spacing: 0.05em;
+    border-bottom: 3px solid transparent;
+    transition: border-color 0.15s ease, color 0.15s ease;
+}
+
+.nav-links a:hover {
+    color: #f8fafc;
+    border-bottom-color: #64748b;
+}
+
+.nav-links a.active {
+    color: #f8fafc;
+    border-bottom-color: #3b82f6;
+}

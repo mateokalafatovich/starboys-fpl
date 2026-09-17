@@ -1,15 +1,18 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react';
+import Header from './layout/Header/Header';
+import ProgressionChart from './components/ProgressionChart/ProgressionChart';
 
 function App() {
-  const [status, setStatus] = useState('checking...');
-
-  useEffect(() => {
-    fetch(`${import.meta.env.VITE_API_URL}/api/health`)
-      .then(res => res.json())
-      .then(data => setStatus(data.status));
-  }, [])
-
-  return <div className='p-8 text-xl'>Backend status: {status}</div>
+  return (
+    <>
+      <Header/>
+      {/*
+      <main>
+        <ProgressionChart/> 
+      </main>
+      */}
+    </>
+  );
 }
 
 export default App
