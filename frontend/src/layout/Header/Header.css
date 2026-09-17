@@ -19,6 +19,7 @@
 .site-title h1 {
     margin: 0;
     font-size: 2rem;
+    font-family: fantasy;
 }
 
 .site-title__image {
@@ -58,6 +59,9 @@
     font-weight: 500;
     text-transform: uppercase;
     font-size: 0.85rem;
+    font-family: 'Space Grotesk', 'Plus Jakarta Sans', -apple-system, sans-serif;
+    font-weight: 700;
+    letter-spacing: -0.02em;
     letter-spacing: 0.05em;
     border-bottom: 3px solid transparent;
     transition: border-color 0.15s ease, color 0.15s ease;
