@@ -1,6 +1,6 @@
 import { getStandingsData, getCurrentGameweek } from '../fpl/fplClient.js';
 import { syncUsers } from './userService.js';
-import { pool } from '../config/db.js';
+import { db } from '../config/db.js';
 import { cacheService } from '../config/redis.js';
 
 const LEAGUE_ID = process.env.LEAGUE_ID;
@@ -23,22 +23,29 @@ function parseStandings(rawData) {
     }));
 }
 
+const upsertScore = db.prepare(`
+    INSERT INTO gameweek_scores 
+        (fpl_id, gameweek_id, points, total_points, league_rank, rank_change)
+    VALUES (?, ?, ?, ?, ?, ?)
+    ON CONFLICT (fpl_id, gameweek_id)
+    DO UPDATE SET
+        points = EXCLUDED.points,
+        total_points = EXCLUDED.total_points,
+        league_rank = EXCLUDED.league_rank,
+        rank_change = EXCLUDED.rank_change,
+        updated_at = CURRENT_TIMESTAMP   
+`);
+
 async function persistStandings(gameweekId, standings) {
-    const queries = standings.map((s) => 
-        pool.query(
-            `INSERT INTO gameweek_scores 
-                (fpl_id, gamweek_id, points, total_points, league_rank, rank_change)
-            VALUES ($1, $2, $3, $4, $5, $6)
-            ON CONFLICT (fpl_id, gameweek_id)
-            DO UPDATE SET
-                points = EXCLUDED.points,
-                total_points = EXCLUDED.total_points,
-                league_rank = EXCLUDED.league_rank,
-                rank_change = EXCLUDED.rank_change,
-                updated_at = NOW()`,
-            [s.fplEntryId, gameweekId, s.gameweekPoints, s.totalPoints, s.rank, s.rankChange]
-        )
-    );
+    const upsertMany = db.transaction((rows) => {
+        for (const s of rows) {
+            upsertScore.run(
+                s.fplEntryId, gameweekId, s.gameweekPoints, 
+                s.totalPoints, s.rank, s.rankChange 
+            );
+        }
+    });
+    upsertMany(standings);
 }
 
 async function getLeagueStandings(leagueId=LEAGUE_ID) {
