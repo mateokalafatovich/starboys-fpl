@@ -29,7 +29,7 @@ export default function RankingsProgressionChart() {
                     domain={[10,0]}
                     scale={scale}
                     reversed={true}
-                    label={{ value: 'Points', angle: -90, position: 'insideLeft' }} 
+                    label={{ value: 'Rank', angle: -90, position: 'insideLeft' }} 
                 />
                 <Tooltip
                     defaultIndex={3}
