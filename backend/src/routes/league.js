@@ -1,5 +1,5 @@
 import { Router } from 'express';
-import { getLeagueStandings, getStandingsProgression } from '../services/leagueService.js';
+import { getLeagueStandings, getStandingsProgression, getRankingsProgression } from '../services/leagueService.js';
 
 const router = Router();
 
@@ -26,5 +26,17 @@ router.get('/standings/progression', async(req, res) => {
         });
     }
 });
+
+router.get('/rankings/progression', async(req, res) => {
+    try {
+        const progression = await getRankingsProgression();
+        res.json(progression);
+    } catch(err) {
+        console.error('Error fetching rankings progression:', err);
+        res.status(500).json({
+            error: 'Failed to fetch rankings progression'
+        });
+    }
+}); 
 
 export default router;
