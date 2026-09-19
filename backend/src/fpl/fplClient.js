@@ -6,10 +6,11 @@ import axios from 'axios';
 // GET Request (fetch standings)
 async function getStandingsData(leagueId) {
   try {
-    const response = await axios.get(ENDPOINTS.standings);
+    const response = await axios.get(ENDPOINTS.standings(leagueId));
     return response.data;
   } catch (err) {
     console.error(`Error fetching standings for league ${leagueId}`, err.message);
+    throw err;
   }
 }
 
@@ -27,7 +28,18 @@ async function getCurrentGameweek() {
   }
 }
 
+async function getEntryHistory(fplEntryId) {
+  try {
+    const response = await axios.get(ENDPOINTS.entryHistory(fplEntryId));
+    return response.data;
+  } catch (err) {
+    console.error(`Error fetching entry history for entry ${fplEntryId}`, err.message);
+    throw err;
+  }
+}
+
 export {
     getStandingsData,
-    getCurrentGameweek
+    getCurrentGameweek,
+    getEntryHistory
 };
