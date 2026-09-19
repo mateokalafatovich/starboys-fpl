@@ -28,7 +28,18 @@ async function getCurrentGameweek() {
   }
 }
 
+async function getEntryHistory(fplEntryId) {
+  try {
+    const response = await axios.get(ENDPOINTS.entryHistory(fplEntryId));
+    return response.data;
+  } catch (err) {
+    console.error(`Error fetching entry history for entry ${fplEntryId}`, err.message);
+    throw err;
+  }
+}
+
 export {
     getStandingsData,
-    getCurrentGameweek
+    getCurrentGameweek,
+    getEntryHistory
 };
