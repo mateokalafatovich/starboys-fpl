@@ -1,7 +1,3 @@
 export default function GameweekPage() {
-  return (
-    <div>
-      <h1>Gameweek</h1>
-    </div>
-  );
+  return <h1>Gameweek</h1>;
 }

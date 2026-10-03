@@ -4,13 +4,8 @@ import RankingsProgressionChart from '../../components/ProgressionChart/Rankings
 export default function SeasonalPage() {
   return (
     <>
-    <div>
       <ProgressionChart />
-    </div>
-    <div>
-      <RankingsProgressionChart/>
-    </div>
+      <RankingsProgressionChart />
     </>
-
   );
 }
