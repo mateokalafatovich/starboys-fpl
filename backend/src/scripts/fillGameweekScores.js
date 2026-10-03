@@ -1,9 +1,6 @@
 import { getCurrentGameweek, getEntryHistory } from '../fpl/fplClient.js';
 import { db } from '../config/db.js';
 
-const GAMEWEEK = 4;
-const GAMEWEEKS_TO_FILL = Array.from({ length: GAMEWEEK}, (_, index) => index+1);
-
 const upsertScore = db.prepare(`
     INSERT INTO gameweek_scores 
         (fpl_id, gameweek_id, points, total_points, league_rank, rank_change)
@@ -22,13 +19,13 @@ function getFplIds() {
     return rows.map((r) => r.fpl_id);
 }
 
-async function fetchHistories(fplIds) {
+async function fetchHistories(fplIds, gameweeksToFill) {
     // { fplId: [{ event, points, total_points }, ...] }
     const historyByFplId = {};
     for (const fplId of fplIds) {
         const history = await getEntryHistory(fplId);
         historyByFplId[fplId] = history.current
-            .filter((gw) => GAMEWEEKS_TO_FILL.includes(gw.event))
+            .filter((gw) => gameweeksToFill.includes(gw.event))
             .map((gw) => ({
                 gameweek: gw.event,
                 points: gw.points,
@@ -38,10 +35,10 @@ async function fetchHistories(fplIds) {
     return historyByFplId;
 }
 
-function groupByGameweek(historyByFplId) {
+function groupByGameweek(historyByFplId, gameweeksToFill) {
     // { 1: [{ fplId, points, totalPoints }, ...], 2: [...], ... }
     const byGameweek = {};
-    for (const gw of GAMEWEEKS_TO_FILL) {
+    for (const gw of gameweeksToFill) {
         byGameweek[gw] = [];
     }
     for (const [fplId, entries] of Object.entries(historyByFplId)) {
@@ -56,10 +53,10 @@ function groupByGameweek(historyByFplId) {
     return byGameweek;
 }
 
-function computeRanks(byGameweek) {
+function computeRanks(byGameweek, gameweeksToFill) {
     // Adds league_rank per gameweek, sorted by totalPoints desc
     const ranked = {};
-    for (const gw of GAMEWEEKS_TO_FILL) {
+    for (const gw of gameweeksToFill) {
         const sorted = [...byGameweek[gw]].sort((a, b) => b.totalPoints - a.totalPoints);
         ranked[gw] = sorted.map((entry, i) => ({
             ...entry,
@@ -69,10 +66,10 @@ function computeRanks(byGameweek) {
     return ranked;
 }
 
-function computeRankChanges(ranked) {
+function computeRankChanges(ranked, gameweeksToFill) {
     // Adds rank_change vs previous backfilled gameweek (0 for gameweek 1)
     const withChanges = {};
-    for (const gw of GAMEWEEKS_TO_FILL) {
+    for (const gw of gameweeksToFill) {
         const prevGw = gw - 1;
         const prevRanks = withChanges[prevGw];
 
@@ -88,7 +85,7 @@ function computeRankChanges(ranked) {
     return withChanges;
 }
 
-function persist(withChanges) {
+function persist(withChanges, gameweeksToFill) {
     const insertMany = db.transaction((allRows) => {
         for (const row of allRows) {
             upsertScore.run(
@@ -98,7 +95,7 @@ function persist(withChanges) {
         }
     });
 
-    const allRows = GAMEWEEKS_TO_FILL.flatMap((gw) =>
+    const allRows = gameweeksToFill.flatMap((gw) =>
         withChanges[gw].map((entry) => ({ ...entry, gameweek: gw }))
     );
 
@@ -106,15 +103,25 @@ function persist(withChanges) {
     return allRows.length;
 }
 
+async function resolveGameweek() {
+    if (process.argv[2] !== undefined) {
+        return Number(process.argv[2]);
+    }
+    return getCurrentGameweek();
+}
+
 async function main() {
+    const GAMEWEEK = await resolveGameweek();
+    const GAMEWEEKS_TO_FILL = Array.from({ length: GAMEWEEK }, (_, index) => index + 1);
+
     const fplIds = getFplIds();
     console.log(`Backfilling gameweeks ${GAMEWEEKS_TO_FILL.join(', ')} for ${fplIds.length} managers...`);
 
-    const historyByFplId = await fetchHistories(fplIds);
-    const byGameweek = groupByGameweek(historyByFplId);
-    const ranked = computeRanks(byGameweek);
-    const withChanges = computeRankChanges(ranked);
-    const rowCount = persist(withChanges);
+    const historyByFplId = await fetchHistories(fplIds, GAMEWEEKS_TO_FILL);
+    const byGameweek = groupByGameweek(historyByFplId, GAMEWEEKS_TO_FILL);
+    const ranked = computeRanks(byGameweek, GAMEWEEKS_TO_FILL);
+    const withChanges = computeRankChanges(ranked, GAMEWEEKS_TO_FILL);
+    const rowCount = persist(withChanges, GAMEWEEKS_TO_FILL);
 
     console.log(`Done. Backfilled ${rowCount} rows.`);
 }
