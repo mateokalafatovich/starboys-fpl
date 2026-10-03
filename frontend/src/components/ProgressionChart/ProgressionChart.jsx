@@ -1,7 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { useStandingsProgression } from '../../hooks/useStandingsProgression';
-
-const LINE_COLORS = ['#2563eb', '#16a34a', '#dc2626', '#2bfbff', '#7c3aed', '#0891b2', '#ff9bc8', '#65a30d', '#7b2900', '#ea580c'];
+import useStandingsProgression from '../../hooks/useStandingsProgression';
+import { LINE_COLORS } from '../../constants/chartColors';
 
 export default function ProgressionChart() {
   const { data, loading, error } = useStandingsProgression();
@@ -23,7 +22,7 @@ export default function ProgressionChart() {
                 <XAxis dataKey="gameweek" label={{ value: 'Gameweek', position: 'insideBottom', offset: -10 }} />
                 <YAxis label={{ value: 'Points', angle: -90, position: 'insideLeft' }} />
                 <Tooltip
-                    defaultIndex={3}
+                    defaultIndex={data.length - 1}
                     contentStyle={{ backgroundColor: '#f8fafc', border: '2px solid #64748b', borderRadius: 8, padding: 10 }}
                     labelStyle={{ margin: 0, fontWeight: 700, color: '#0f172a' }}
                     itemStyle={{ display: 'block', paddingTop: 2, paddingBottom: 2 }}
