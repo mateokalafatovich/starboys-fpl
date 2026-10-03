@@ -1,8 +1,6 @@
 import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts';
-import { scaleLinear } from 'd3-scale';
 import useRankingsProgression from '../../hooks/useRankingsProgression';
-
-const LINE_COLORS = ['#2563eb', '#16a34a', '#dc2626', '#2bfbff', '#7c3aed', '#0891b2', '#ff9bc8', '#65a30d', '#7b2900', '#ea580c'];
+import { LINE_COLORS } from '../../constants/chartColors';
 
 export default function RankingsProgressionChart() {
   const { data, loading, error } = useRankingsProgression();
@@ -12,9 +10,7 @@ export default function RankingsProgressionChart() {
   if (!data || data.length === 0) return <div>No rankings progression data yet.</div>;
 
   const teamNames = Object.keys(data[0]).filter((key) => key !== 'gameweek');
-
-  const scale = scaleLinear().domain([0, 10]).range([10, 0]); 
-
+  const rankCount = teamNames.length;
 
   return (
     <div style={{ width: '100%', height: 400, display: 'flex', justifyContent: 'center' }}>
@@ -26,13 +22,15 @@ export default function RankingsProgressionChart() {
                 <CartesianGrid strokeDasharray="3 3" stroke="#f0f0f0"/>
                 <XAxis dataKey="gameweek" label={{ value: 'Gameweek', position: 'insideBottom', offset: -10 }} />
                 <YAxis 
-                    domain={[10,0]}
-                    scale={scale}
-                    reversed={true}
+                    domain={[1, rankCount]}
+                    reversed
+                    interval={0}
+                    ticks={Array.from({ length: rankCount }, (_, i) => i + 1)}
+                    allowDecimals={false}
                     label={{ value: 'Rank', angle: -90, position: 'insideLeft' }} 
                 />
                 <Tooltip
-                    defaultIndex={3}
+                    defaultIndex={data.length - 1}
                     contentStyle={{ backgroundColor: '#f8fafc', border: '2px solid #64748b', borderRadius: 8, padding: 10 }}
                     labelStyle={{ margin: 0, fontWeight: 700, color: '#0f172a' }}
                     itemStyle={{ display: 'block', paddingTop: 2, paddingBottom: 2 }}
