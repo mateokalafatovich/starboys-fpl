@@ -3,11 +3,98 @@
   <head>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!--
+    <link rel="preload" as="image" href="/images/saka2.png" fetchpriority="high">
+    -->
+    <link rel="stylesheet" href="src/css/base.css">
+    <script type="module" src="/src/js/pages/home.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Starboys FPL</title>
+    <title>Starboys FPL Seasonal Analytics</title>
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.jsx"></script>
+    <header>
+      <a href="/">
+        <img src="/images/star.png" alt="Starboys FPL Logo" width="50" height="50">
+      </a>
+      <nav aria-label="Principle navigation bar">
+        <a href="/seasonal/">Seasonal Analytics</a>
+        <a href="/weekly/">Weekly Recap</a>
+        <a href="/managers/">Managers</a>
+      </nav>
+    </header>
+    <main>
+      <!--
+      <img class="hero-bg" src="/images/saka2.png" alt="Bukayo Saka background image"
+        width="800" height="1000" fetchpriority="high"
+      >      
+      -->
+      <hgroup>
+        <h1>Starboys FPL</h1>
+        <p id="welcome">Welcome to Starboys FPL. This is the home of the Starboys.</p>
+      </hgroup>
+      <section id="background">
+        <h2>Background</h2>
+        <p>
+          In early 2026, five of the current Starboys were playing a 
+          game known as footy impostor. It is a version of the game imposter,
+          but oriented around soccer players. There is a soccer player chosen 
+          at random for the round. Each person is then assigned a role: 
+          civilian or imposter. The civilians know the name of the soccer 
+          player, while the 1 imposter does not. The goal of the game for a 
+          civilian is to not give away the soccer player to the imposter, 
+          while also reassuring the rest of the civilians that they are not the 
+          imposter. Each person goes around saying a word, and after each 
+          round, everyone votes who they think is the imposter, and that person 
+          is eliminated, or until the imposter is the last of two people standing.
+        </p>
+        <p>
+          Roles were assigned. The player of the round was Bukayo Saka , 
+          also known as 🌟<i>Starboy</i>🌟. Juan goes first and says a
+          seemingly unsuspicious word. Then comes Cross. Of all the many
+          things there are to say about Bukayo Saka: washed, finished,
+          unc, Cross says "STARBOY". The one phrase Bukayo Saka is the 
+          owner of in the soccer world. Everyone burst out laughing.
+          Cross had completely ruined the round and given it away to
+          the imposter, but we all couldn't help but laugh at the 
+          shockingly atrocious assemblance of words Cross chose to utter.
+        </p>
+        <p>
+          To this day, the Starboy incident is still remembered among
+          the Starboys present that day as the worst imposter 
+          word ever uttered by a civilian in a game of imposter. In honor 
+          of Cross' performance and in light of the meme Saka has become in 
+          the footy world, the Starboys have named their FPL League after 
+          the Arsenal number 7.
+        </p>
+        <h2>Today</h2>
+        <p>
+          Today the Starboys compete for a grand prize pool of $500. The winner
+          gets glory and bragging rights for at least a year, while the loser...
+          is in for a rough time. This year's punishment will include a devastatingly
+          dreadful TikTok which the last place will have to post online for thousands
+          of people to see.
+        </p>
+      </section>
+      <section id="standings">
+        <h2>League Standings</h2>
+        <table>
+          <thead>
+            <tr>
+              <th scope="col">Rank</th>
+              <th scope="col">Manager</th>
+              <th scope="col">Gameweek</th>
+              <th scope="col">Total</th>
+            </tr>
+          </thead>
+          <tbody id="standingsRow"></tbody>
+        </table>
+      </section>
+
+    </main>
+    <footer>
+      <p>Data from the official Fantasy Premier League API.</p>
+      <p><small>&copy; 2026 Starboys FPL. All rights reserverd.</small></p>
+    </footer>
+
   </body>
 </html>

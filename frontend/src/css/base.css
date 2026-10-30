@@ -1,0 +1,162 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box; /* padding and borders don't add to an element's width */
+}
+
+@font-face {
+  font-family: 'StarboysHeaderFont';
+  src: url('fonts/starboys-main.ttf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'StarboysMainFont';
+  src: url('fonts/starboys-header.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
+:root {
+    /* Colors */
+    --color-bg: #010000e9; /* page background (your gold) */
+    --color-text: #01016b; /* body text (your navy) */
+    --color-surface: #fff6dc; /* graph background */
+    --color-header-bg: #f51515; /* header & footer */
+    --color-header-text: #fbc439;
+    --color-section: rgba(18, 18, 135, 0.573);
+
+    /* Typography */
+    --font-header: 'StarboysHeaderFont', sans-serif;
+    --font-body: 'StarboysMainFont', sans-serif;
+
+    /* Layout & spacing */
+    --max-width: 75rem;
+    --space-page: 1.5rem; /* side padding */
+    --space: 1rem; /* base spacing unit */ 
+    
+    --body-height: 100vh;
+}
+
+body {
+    min-height: var(--body-height);
+    margin: 0;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    background-color: var(--color-bg);
+    font: var(--font-header);
+}
+
+header {
+    display: flex;
+    align-items: center;
+    position: sticky;
+    gap: var(--space);
+    padding-inline: max(
+        var(--space-page),
+        (100% - var(--max-width)) / 2 + var(--space-page)
+    );
+    top: 0;
+    z-index: 1000;
+    background-color: var(--color-header-bg);
+    font-family: var(--font-header);
+}
+
+nav {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+header a {
+    color: var(--color-header-text);
+    padding: 14px 16px;
+    text-decoration: none;
+    font-size: 17px;
+}
+
+header a.hover {
+    /* Need to fix */
+    background-color: #ddd;
+    color: black;
+}
+
+main {
+    display: grid;
+    align-content: start;
+    row-gap: 0.5rem;
+    column-gap: 1.5rem;
+    max-width: var(--max-width);
+    margin-inline: auto;
+    padding: var(--space-page);
+    color: white;
+    font-family: var(--font-body);
+}
+
+h1, h2 {
+    color: var(--color-header-text)
+}
+
+hgroup {
+  text-align: center;
+}
+
+hgroup h1 {
+  margin: 0 0 0.25rem; /* small space between title and subtitle */
+}
+
+hgroup p {
+  margin: 0;
+}
+
+#standings {
+    text-align: center;
+}
+
+#background, #standings {
+    background-color: var(--color-section);
+    border: 2px solid var(--color-header-text);
+    border-radius: 0.5rem;
+    padding: 1rem 1.5rem;
+    min-width: 0;
+    color: white;
+}
+
+/* Wide screens: side by side */
+@media (min-width: 48rem) {
+  main {
+    grid-template-columns: 3fr 2fr; /* background wider than standings */
+    align-items: start;             /* each box only as tall as its content */
+  }
+
+  /* h1, intro paragraph, etc. span the full width above the two boxes */
+  main > :not(section) {
+    grid-column: 1 / -1;
+  }
+}
+
+/* League table customization */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgb(0, 0, 0);
+    color: var(--color-header-text)
+}
+
+table, th, td {
+    border: 1px solid rgb(64, 0, 0);
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
+
+footer {
+    min-height: 50px;
+    background-color: var(--color-header-bg);
+    text-align: center;
+    color: var(--color-header-text);
+    font-family: var(--font-body);
+}
