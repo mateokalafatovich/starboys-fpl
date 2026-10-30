@@ -1,7 +1,19 @@
-import react from '@vitejs/plugin-react'
-import { defineConfig } from 'vite'
+import { resolve } from "node:path";
+import { defineConfig } from "vite";
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()],
-})
+  server: {
+    proxy: {
+      "/api": "http://localhost:4000"
+    },
+  },
+  build: {
+    rollupOptions: {
+      input: {
+        seasonal: resolve(__dirname, "index.html"),
+        weekly:   resolve(__dirname, "weekly/index.html"),
+        gameweek: resolve(__dirname, "gameweek/index.html"),
+      },
+    },
+  },
+});
