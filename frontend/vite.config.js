@@ -10,7 +10,8 @@ export default defineConfig({
   build: {
     rollupOptions: {
       input: {
-        seasonal: resolve(__dirname, "index.html"),
+        main: resolve(__dirname, "index.html"),
+        seasonal: resolve(__dirname, "seasonal/index.html"),
         weekly:   resolve(__dirname, "weekly/index.html"),
         gameweek: resolve(__dirname, "gameweek/index.html"),
       },
