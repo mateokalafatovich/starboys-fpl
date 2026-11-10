@@ -1,0 +1,41 @@
+hgroup {
+  text-align: center;
+}
+
+hgroup h1 {
+  margin: 0 0 0.25rem; /* small space between title and subtitle */
+}
+
+hgroup p {
+  margin: 0;
+}
+
+#standings {
+    text-align: center;
+}
+
+#background, #standings {
+    background-color: var(--color-section);
+    border: 2px solid var(--color-header-text);
+    border-radius: 0.5rem;
+    padding: 1rem 1.5rem;
+    min-width: 0;
+    color: white;
+}
+
+/* League table customization */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: rgb(0, 0, 0);
+    color: var(--color-header-text)
+}
+
+table, th, td {
+    border: 1px solid rgb(64, 0, 0);
+}
+
+th, td {
+    padding: 10px;
+    text-align: left;
+}
