@@ -1,4 +1,4 @@
-import { getStandings } from "../api";
+import { getStandings } from "../api/league";
 
 const tbody = document.querySelector("#standings tbody");
 
