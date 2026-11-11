@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="stylesheet" href="../src/css/base.css">
+    <link rel="stylesheet" href="../src/css/seasonal.css">
+    <script type="module" src="/src/js/pages/seasonal/main.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Starboys FPL Seasonal Analytics</title>
+  </head>
+  <body>
+    <header>
+      <a href="/">
+        <img src="/images/star.png" alt="Starboys FPL Logo" width="50" height="50">
+      </a>
+      <nav aria-label="Principle navigation bar">
+        <a href="/seasonal/">Seasonal Analytics</a>
+        <a href="/weekly/">Weekly Recap</a>
+        <a href="/managers/">Managers</a>
+      </nav>
+    </header>
+    <main>
+        <h1>Seasonal Analytics</h1>
+        <section id="total-points" class="chart-card">
+          <h3>Total Points</h3>
+          <div class="chart-wrap">
+            <canvas role="img" aria-label="Line chart of each manager's total points by gameweek"></canvas>
+          </div>
+        </section>
+    </main>
+    <footer>
+      <p>Data from the official Fantasy Premier League API.</p>
+      <p><small>&copy; 2026 Starboys FPL. All rights reserverd.</small></p>
+    </footer>
+  </body>
+</html>
