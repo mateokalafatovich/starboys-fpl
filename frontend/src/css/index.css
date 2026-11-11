@@ -39,3 +39,16 @@ th, td {
     padding: 10px;
     text-align: left;
 }
+
+/* Wide screens: side by side */
+@media (min-width: 48rem) {
+  main {
+    grid-template-columns: 3fr 2fr; /* background wider than standings */
+    align-items: start;             /* each box only as tall as its content */
+  }
+
+  /* h1, intro paragraph, etc. span the full width above the two boxes */
+  main > :not(section) {
+    grid-column: 1 / -1;
+  }
+}

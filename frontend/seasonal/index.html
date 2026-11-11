@@ -5,6 +5,7 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="stylesheet" href="../src/css/base.css">
     <link rel="stylesheet" href="../src/css/seasonal.css">
+    <script type="module" src="/src/js/pages/seasonal/main.js"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Starboys FPL Seasonal Analytics</title>
   </head>
@@ -20,14 +21,17 @@
       </nav>
     </header>
     <main>
-        <h1>Starboys FPL</h1>
-        <h2>Seasonal Analytics</h2>
-        <canvas id="progression"></canvas>
+        <h1>Seasonal Analytics</h1>
+        <section id="total-points" class="chart-card">
+          <h3>Total Points</h3>
+          <div class="chart-wrap">
+            <canvas role="img" aria-label="Line chart of each manager's total points by gameweek"></canvas>
+          </div>
+        </section>
     </main>
     <footer>
       <p>Data from the official Fantasy Premier League API.</p>
       <p><small>&copy; 2026 Starboys FPL. All rights reserverd.</small></p>
     </footer>
-
   </body>
 </html>
